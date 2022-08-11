@@ -54,21 +54,44 @@ design.addEventListener('input',designListener);
 
 /* "Register for Activies" Section */
 
-let fieldset = document.querySelector('#activities-box');
+let fieldset = document.querySelector('p');
 let totalCost = document.getElementById('activities-cost');
+let checkbox = document.querySelectorAll('input[type="checkbox"]');
 let finalTotal = 0;
+
 fieldset.addEventListener('change', (e) => {
     let clicked = e.target;
     let clickedCost = clicked.getAttribute('data-cost');
     let price = parseInt(clickedCost);
-    if (clicked.checked){
-        finalTotal += price;
-    } else {
-        finalTotal -= price;
-    }
-    let total = finalTotal.toString();
+        if (clicked.checked){
+            finalTotal += price;
+        } else {
+            finalTotal -= price;
+        }
+        let total = finalTotal.toString();
+
+        for (let i=0; i<checkbox.length;i++){
+            let checkboxType = checkbox[i].getAttribute('data-day-and-time');
+            let clickedDayAndTime = clicked.getAttribute('data-day-and-time');
+            if (checkboxType === clickedDayAndTime && clicked !==checkbox[i]){
+                if (clicked.checked){
+                checkbox[i].disabled = true;
+            } else {
+                checkbox[i].disabled = false;
+            }
+            }
+        }
+        console.log(finalTotal);
+    
+    
 })
 
-console.log(totalCost.innerHTML);
+
+let string = totalCost.innerHTML;
+string.replace(/\d/,);
+
+
+
+//replace the number inside totalCost.innerHTML with the string finalTotal
 
 // regex the totalCost.innerHTML and input the total amount 
