@@ -29,10 +29,8 @@ color.style.display = 'none'
 //Listening for user changes for shirt-design
 const design = document.querySelector('#design');
 const colorSelection = document.querySelector('#color');
-console.log(colorSelection);
 function designListener(e){
     let select = e.target;{
-    console.log(select.value);
         if(select.value == "js puns"){
             color.style.display = 'block';
             colorSelection[1].style.display = 'block';
@@ -56,3 +54,17 @@ design.addEventListener('input',designListener);
 
 /* "Register for Activies" Section */
 
+let fieldset = document.querySelector('#activities-box');
+let totalCost = document.getElementById('activities-cost');
+console.log(totalCost.innerHTML);
+fieldset.addEventListener('change', (e) => {
+    let clicked = e.target;
+    let clickedCost = clicked.getAttribute('data-cost');
+    if (clicked.checked){
+        
+    } else {
+        
+    }
+    
+    // console.log(clickedCost);
+})
