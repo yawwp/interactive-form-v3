@@ -56,15 +56,19 @@ design.addEventListener('input',designListener);
 
 let fieldset = document.querySelector('#activities-box');
 let totalCost = document.getElementById('activities-cost');
-console.log(totalCost.innerHTML);
+let finalTotal = 0;
 fieldset.addEventListener('change', (e) => {
     let clicked = e.target;
     let clickedCost = clicked.getAttribute('data-cost');
+    let price = parseInt(clickedCost);
     if (clicked.checked){
-        
+        finalTotal += price;
     } else {
-        
+        finalTotal -= price;
     }
-    
-    // console.log(clickedCost);
+    let total = finalTotal.toString();
 })
+
+console.log(totalCost.innerHTML);
+
+// regex the totalCost.innerHTML and input the total amount 
