@@ -54,7 +54,7 @@ design.addEventListener('input',designListener);
 
 /* "Register for Activies" Section */
 
-let fieldset = document.querySelector('p');
+let fieldset = document.querySelector('.activities');
 let totalCost = document.getElementById('activities-cost');
 let checkbox = document.querySelectorAll('input[type="checkbox"]');
 let finalTotal = 0;
@@ -81,14 +81,17 @@ fieldset.addEventListener('change', (e) => {
             }
             }
         }
-        console.log(finalTotal);
-    
-    
+    function updateCost(total){
+        totalCost.innerHTML = `Total: $${total}`;
+    }
+    updateCost(finalTotal);
 })
 
 
-let string = totalCost.innerHTML;
-string.replace(/\d/,);
+// let string = totalCost.innerHTML;
+// let regex = /(Total:\s)(\$\d)/
+// let replacement = '$1 $2';
+// console.log(string.replace(regex,replacement));
 
 
 
