@@ -18,10 +18,7 @@ function selectJobRole (e){
 
 title.addEventListener('input', selectJobRole);
 
-/*
-
-    T-Shirt Info
-*/
+/* T-Shirt Info */
 //Disabling the "Color" <select element>
 const color = document.querySelector('div[id="shirt-colors"]');
 color.style.display = 'none'
@@ -88,13 +85,62 @@ fieldset.addEventListener('change', (e) => {
 })
 
 
-// let string = totalCost.innerHTML;
-// let regex = /(Total:\s)(\$\d)/
-// let replacement = '$1 $2';
-// console.log(string.replace(regex,replacement));
+/* Payment Info Section */ 
+const paymentMethod = document.querySelector('#payment');
+const creditCard = document.querySelector('div [id="credit-card"]');
+const paypal = document.querySelector('div [id="paypal"]');
+const bitcoin = document.querySelector('div [id="bitcoin"]');
+creditCard.style.display = "none";
+paypal.style.display = "none";
+bitcoin.style.display = "none";
+
+paymentMethod.addEventListener('change', (e) => {
+    let select = e.target;
+    if (select.value === 'credit-card'){
+        creditCard.style.display = "";
+        paypal.style.display = "none";
+        bitcoin.style.display = "none";
+    } else if (select.value === 'paypal'){
+        creditCard.style.display = "none";
+        paypal.style.display = "";
+        bitcoin.style.display = "none";
+    } else if (select.value === 'bitcoin') {
+        creditCard.style.display = "none";
+        paypal.style.display = "none";
+        bitcoin.style.display = "";
+    }
+})
+
+/* Form Validation Part */
+
+const submit = document.querySelector('form');
+const usernameInput = document.getElementById('name');
+const emailInput = document.getElementById('email');
 
 
+/* Validators */
+function isValidUserName(username){
+    return /^\w+$/.test(username)
+}
 
-//replace the number inside totalCost.innerHTML with the string finalTotal
+/* Formatting function */
 
-// regex the totalCost.innerHTML and input the total amount 
+/* Setup events */
+function showOrHideTip (show,element) {
+    if(show){
+        element.style.display = "inherit";
+    } else {
+        element.style.display = "none";
+    }
+}
+
+function createListener(validator){
+    return e => {
+        const text = e.target.value;
+        const valid = validator(text);
+        const showtip = text !== "" && !valid;
+        const tooltip = e.target.nextElementSibling;
+        showOrHideTip(showtip ,tooltip);
+    };
+}
+usernameInput.addEventListener("input", createListener(isValidUserName));
