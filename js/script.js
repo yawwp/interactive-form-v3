@@ -144,3 +144,6 @@ function createListener(validator){
     };
 }
 usernameInput.addEventListener("input", createListener(isValidUserName));
+
+
+/* Email Validation */ 
