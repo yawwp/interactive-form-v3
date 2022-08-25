@@ -19,43 +19,45 @@ function selectJobRole (e){
 title.addEventListener('input', selectJobRole);
 
 /* T-Shirt Info */
-//Disabling the "Color" <select element>
-const color = document.querySelector('div[id="shirt-colors"]');
-color.style.display = 'none'
-
-//Listening for user changes for shirt-design
 const design = document.querySelector('#design');
-const colorSelection = document.querySelector('#color');
-function designListener(e){
-    let select = e.target;{
-        if(select.value == "js puns"){
-            color.style.display = 'block';
-            colorSelection[1].style.display = 'block';
-            colorSelection[2].style.display = 'block';
-            colorSelection[3].style.display = 'block';
-            colorSelection[4].style.display = 'none';
-            colorSelection[5].style.display = 'none';
-            colorSelection[6].style.display = 'none';
-        } else if (select.value == "heart js" ) {
-            color.style.display = 'block';
-            colorSelection[1].style.display = 'none';
-            colorSelection[2].style.display = 'none';
-            colorSelection[3].style.display = 'none';
-            colorSelection[4].style.display = 'block';
-            colorSelection[5].style.display = 'block';
-            colorSelection[6].style.display = 'block';
-        }
+const color = document.querySelector('#color');
+const colorOption = color.children; 
+color.disabled = true;
+
+design.addEventListener('change', (e) => {
+    color.disabled = false; 
+    for (let i=0;i<colorOption.length;i++){
+        let select = e.target.value
+        let dataTheme = colorOption[i].getAttribute('data-theme');
+        if (colorOption[i].getAttribute('data-theme') === select) {
+            colorOption[i].hidden = false;
+            select.hidden = true;
+       } else {
+            colorOption[i].hidden = true;
+            select.hidden = false;
+       }
     }
-}
-design.addEventListener('input',designListener);
+})
 
 /* "Register for Activies" Section */
-
 let fieldset = document.querySelector('.activities');
 let totalCost = document.getElementById('activities-cost');
 let checkbox = document.querySelectorAll('input[type="checkbox"]');
-let finalTotal = 0;
 
+
+for(let i=0;i<checkbox.length;i++){
+    checkbox[i].addEventListener("focus", () => {
+        checkbox[i].parentElement.classList.add("focus");
+        checkbox[i].parentElement.classList.add("blur");
+    })
+
+    checkbox[i].addEventListener("blur", () => {
+        checkbox[i].parentElement.classList.remove("focus");
+        checkbox[i].parentElement.classList.add("blur");
+    })
+}
+
+let finalTotal = 0;
 fieldset.addEventListener('change', (e) => {
     let clicked = e.target;
     let clickedCost = clicked.getAttribute('data-cost');
@@ -113,37 +115,127 @@ paymentMethod.addEventListener('change', (e) => {
 
 /* Form Validation Part */
 
-const submit = document.querySelector('form');
-const usernameInput = document.getElementById('name');
-const emailInput = document.getElementById('email');
+const form = document.querySelector('form');
+const nameInput = document.querySelector('#name');
+const emailInput = document.querySelector('#email');
+const card = document.querySelector('input[id="cc-num"]');
+const zip = document.querySelector('input[id="zip"]');
+const cvv = document.querySelector('input[id="cvv"]');
+
+const activityTotalElement = document.querySelector('#activities-total')
+let activityTotal = 0;
+
+document.querySelector('#activities').addEventListener('change', e => {
+    (e.target.checked) ? activityTotal++ : activityTotal--;
+  });
 
 
 /* Validators */
-function isValidUserName(username){
-    return /^\w+$/.test(username)
+function nameValidator(){
+let nameValue = nameInput.value;
+const nameIsValid = /^[a-zA-Z]+ ?[a-zA-Z]*? ?[a-zA-Z]*?$/.test(nameValue);
+return nameIsValid;
+}
+function emailValidator(){
+const emailValue= emailInput.value;
+const emailIsValid = /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailValue);
+return emailIsValid;
 }
 
-/* Formatting function */
+function activityValidator() {
+    const activtySectionIsValid = activityTotal > 0;
+    return activtySectionIsValid;
+}
 
-/* Setup events */
-function showOrHideTip (show,element) {
-    if(show){
-        element.style.display = "inherit";
+function creditCardValidator(){
+    const creditCardValue = card.value;
+    const creditCardIsValid = /^\d{13,16}/.test(creditCardValue);
+    return creditCardIsValid;
+}
+
+function zipValidator(){
+    const zipValue = zip.value;
+    const zipIsValid = /^\d{5}$/.test(zipValue);
+    return zipIsValid;
+}
+
+function cvvValidator(){
+    const cvvValue=cvv.value;
+    const cvvIsValid = /^\d{3,4}/.test(cvvValue);
+    return cvvIsValid;
+}
+
+
+form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!nameValidator()){
+        e.preventDefault();
+        nameInput.parentElement.classList.add('not-valid');
+        nameInput.parentElement.classList.remove('valid');
+        nameInput.parentElement.lastElementChild.style.display = 'block';
+     } else {
+        nameInput.parentElement.classList.remove('not-valid');
+        nameInput.parentElement.classList.add('valid');
+        nameInput.parentElement.lastElementChild.style.display = 'none';
+     }
+
+
+    if (!emailValidator()){
+        e.preventDefault();
+        emailInput.parentElement.classList.add('not-valid');
+        emailInput.parentElement.classList.remove('valid');
+        emailInput.parentElement.lastElementChild.style.display = 'block';
     } else {
-        element.style.display = "none";
+        emailInput.parentElement.classList.remove('not-valid');
+        emailInput.parentElement.classList.add('valid');
+        emailInput.parentElement.lastElementChild.style.display = 'none';
     }
-}
 
-function createListener(validator){
-    return e => {
-        const text = e.target.value;
-        const valid = validator(text);
-        const showtip = text !== "" && !valid;
-        const tooltip = e.target.nextElementSibling;
-        showOrHideTip(showtip ,tooltip);
-    };
-}
-usernameInput.addEventListener("input", createListener(isValidUserName));
+    if(!activityValidator()){
+      e.preventDefault();
+        activityTotalElement.parentElement.classList.add('not-valid');
+        activityTotalElement.parentElement.classList.remove('valid');
+        activityTotalElement.parentElement.lastElementChild.style.display = 'block';
+    } else {
+        emailInput.parentElement.classList.remove('not-valid');
+        emailInput.parentElement.classList.add('valid');
+        emailInput.parentElement.lastElementChild.style.display = 'none';
+    }
 
 
-/* Email Validation */ 
+    if(!creditCardValidator()){
+        e.preventDefault();
+        card.parentElement.classList.add('not-valid');
+        card.parentElement.classList.remove('valid');
+        card.parentElement.lastElementChild.style.display = 'block';
+    } else {
+        card.parentElement.classList.remove('not-valid');
+        card.parentElement.classList.add('valid');
+        card.parentElement.lastElementChild.style.display = 'none';
+    }
+
+
+    if(!zipValidator()){
+        e.preventDefault();
+        zip.parentElement.classList.add('not-valid');
+        zip.parentElement.classList.remove('valid');
+        zip.parentElement.lastElementChild.style.display = 'block';
+    } else {
+        zip.parentElement.classList.remove('not-valid');
+        zip.parentElement.classList.add('valid');
+        zip.parentElement.lastElementChild.style.display = 'none';
+    }
+
+
+    if (!cvvValidator()){
+        e.preventDefault();
+        cvv.parentElement.classList.add('not-valid');
+        cvv.parentElement.classList.remove('valid');
+        cvv.parentElement.lastElementChild.style.display = 'block';
+    } else {
+        cvv.parentElement.classList.remove('not-valid');
+        cvv.parentElement.classList.add('valid');
+        cvv.parentElement.lastElementChild.style.display = 'none';
+    }
+
+});
