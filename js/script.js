@@ -92,7 +92,7 @@ const paymentMethod = document.querySelector('#payment');
 const creditCard = document.querySelector('div [id="credit-card"]');
 const paypal = document.querySelector('div [id="paypal"]');
 const bitcoin = document.querySelector('div [id="bitcoin"]');
-creditCard.style.display = "none";
+creditCard.style.display = "";
 paypal.style.display = "none";
 bitcoin.style.display = "none";
 
@@ -167,7 +167,6 @@ function cvvValidator(){
 
 
 form.addEventListener('submit', e => {
-    e.preventDefault();
     if (!nameValidator()){
         e.preventDefault();
         nameInput.parentElement.classList.add('not-valid');
@@ -197,9 +196,9 @@ form.addEventListener('submit', e => {
         activityTotalElement.parentElement.classList.remove('valid');
         activityTotalElement.parentElement.lastElementChild.style.display = 'block';
     } else {
-        emailInput.parentElement.classList.remove('not-valid');
-        emailInput.parentElement.classList.add('valid');
-        emailInput.parentElement.lastElementChild.style.display = 'none';
+        activityTotalElement.parentElement.classList.remove('not-valid');
+        activityTotalElement.parentElement.classList.add('valid');
+        activityTotalElement.parentElement.lastElementChild.style.display = 'none';
     }
 
 
