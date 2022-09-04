@@ -27,12 +27,10 @@ const color = document.querySelector('#color');
 const colorOption = color.children; 
 color.disabled = true; //Disabling the selection until the user selects a design
 
-
 /* 
 
 -- Design Event Listener -- 
 The user has 2 choices here. Once the user selects a style, the color selection is enabled. The user then selects the color based on the design selected.
-
 
 We loop through the color options and get the attribute value 'data-theme'
 If the attribute, 'data-theme' is equal to the target selected value, then the color selection displays
@@ -46,9 +44,11 @@ design.addEventListener('change', (e) => {
         if (colorOption[i].getAttribute('data-theme') === select) {
             colorOption[i].hidden = false;
             select.hidden = true;
+            colorOption[i].setAttribute('selected',true);
        } else {
             colorOption[i].hidden = true;
             select.hidden = false;
+            colorOption[i].removeAttribute('selected');
        }
     }
 })
@@ -70,13 +70,10 @@ for(let i=0;i<checkbox.length;i++){
     checkbox[i].addEventListener("focus", () => {
         checkbox[i].parentElement.classList.add("focus");
     })
-
     checkbox[i].addEventListener("blur", () => {
         checkbox[i].parentElement.classList.remove("focus");
     })
 }
-
-
 let finalTotal = 0; //Creating an integer to add or subtract the amount. 
 
 /*
@@ -98,21 +95,20 @@ For tast 2:
     If the 'data-day-and-time' are the same with the attribute selected and the selected value is not equal to the checkbox's HTML element
     If both of the logic is true, then disable the HTML element that has the same 'data-day-and-time'
 */
-
+let activityTotal = 0; //Variable to count how activities selected from user.
 fieldset.addEventListener('change', (e) => {
     let clicked = e.target;
     let clickedCost = clicked.getAttribute('data-cost');
     let price = parseInt(clickedCost);
         if (clicked.checked){
             finalTotal += price;
+            activityTotal += 1; //adds 1 per selected
         } else {
             finalTotal -= price;
+            activityTotal -= 1; //subtracts 1 when deselected
         }
         let total = finalTotal.toString();
         for (let i=0; i<checkbox.length;i++){
-            console.log(clicked);
-            console.log(checkbox[i]);
-            console.log(clicked.checked);
             let checkboxType = checkbox[i].getAttribute('data-day-and-time');
             let clickedDayAndTime = clicked.getAttribute('data-day-and-time');
             if (checkboxType === clickedDayAndTime && clicked !==checkbox[i]){
@@ -128,6 +124,7 @@ fieldset.addEventListener('change', (e) => {
     }
     updateCost(finalTotal);
 })
+
 
 
 /* Payment Info Section */ 
@@ -172,7 +169,7 @@ const card = document.querySelector('input[id="cc-num"]');
 const zip = document.querySelector('input[id="zip"]');
 const cvv = document.querySelector('input[id="cvv"]');
 const activityTotalElement = document.querySelector('#activities-total')
-let activityTotal = 0;
+
 
 
 
@@ -217,12 +214,10 @@ function cvvValidator(){
 
 
 
-
 /* 
 -- Form Event Listener --
     Before the form could submit. The form needs to pass all validators. So we use conditionals here. 
     If a validator is false, then it will prevent the form from submitting. 
-
 */
 form.addEventListener('submit', e => {
     if (!nameValidator()){
@@ -294,5 +289,4 @@ form.addEventListener('submit', e => {
         cvv.parentElement.classList.add('valid');
         cvv.parentElement.lastElementChild.style.display = 'none';
     }
-
 });
